@@ -6,12 +6,9 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import javax.servlet.ServletContext;
+import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("valo")
 @SuppressWarnings("serial")
@@ -19,27 +16,13 @@ public class HelloWorldUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        // All of this code is running in your server's JVM
-        // Create a TextField input.
-        TextField name = new TextField("Your Name", "Vaadin");
-
-        // Access any server-side API directly.
-        ServletContext servletContext = VaadinServlet.getCurrent().
-                getServletContext();
-        String serverName = servletContext.getServerInfo();
-
-        // Create a Button and define a server-side click listener.
-        Button greetButton = new Button("Greet the Server");
-        greetButton.addClickListener(event
-                -> Notification.show("Hello " + name.getValue() + "!\n"
-                        + "I'm " + serverName));
-
-        // Display TextField and Button vertically.
-        VerticalLayout layout = new VerticalLayout(name, greetButton);
-
-        layout.setSpacing(true);
-        layout.setMargin(true);
-        setContent(layout);
+        final TabSheet tabSheet = new TabSheet();
+        tabSheet.addTab(new BasicExample());
+        tabSheet.addTab(new ListingData());
+        tabSheet.addTab(new PersonForm());
+        tabSheet.setSizeFull();
+        tabSheet.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
+        setContent(tabSheet);
     }
 
     @WebServlet(value = "/*", asyncSupported = true)
